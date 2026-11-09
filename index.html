@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kishan Akabari Portfolio</title>
+<meta name="description" content="Data and cyber security analytics portfolio by Kishan Akabari.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7f9;--panel:#fff;--fg:#16202b;--muted:#5b6672;--line:#dfe3e8;--accent:#1f4e79;--ok:#1d7a4f;
+--sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Source Serif 4",Georgia,serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0f151b;--panel:#17202a;--fg:#e8edf2;--muted:#9aa6b2;--line:#2a3540;--accent:#6aa9e0;--ok:#5cc28e;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.5;
+padding:48px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.eyebrow{margin:0;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.8rem);line-height:1.1;margin:6px 0 10px;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:40rem;font-size:1.05rem}
+.list{display:flex;flex-direction:column;gap:14px}
+.proj{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;text-decoration:none;color:inherit}
+a.proj:hover,a.proj:focus-visible{border-color:var(--accent);outline:none}
+.num{grid-row:span 3;font-family:var(--serif);font-size:1.6rem;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2}
+.proj h2{margin:0;font-size:1.1rem;font-weight:600}
+.proj p{margin:0;color:var(--muted);font-size:.95rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted);margin-top:6px}
+.tag{color:var(--ok);font-weight:600}
+.cta{color:var(--accent);font-weight:600}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+footer a{color:inherit}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Data &amp; cyber security analytics</p>
+    <h1>Kishan Akabari</h1>
+    <p class="lede">Dashboards and analysis built from public Australian breach, vulnerability and compliance data, turning security information into clear insights for decision-makers.</p>
+  </header>
+
+  <section class="list" aria-label="Projects">
+    <a class="proj" href="data-breach-dashboard/">
+      <span class="num">01</span>
+      <h2>Australian Data Breach Dashboard</h2>
+      <p>Notifiable data breaches from January 2024 to June 2026: trends, most-breached sectors, breach size, causes and attack types, with insights for cyber security clients.</p>
+      <div class="meta"><span class="tag">Completed</span><span>Data: OAIC Notifiable Data Breaches scheme</span><span class="cta">View dashboard →</span></div>
+    </a>
+  </section>
+
+  <footer>
+    Master of Business Analytics student, Victoria University, Brisbane ·
+    <a href="https://www.linkedin.com/in/kishan-akabari-833692234/" target="_blank" rel="noopener">LinkedIn</a> ·
+    <a href="https://github.com/KISHAN0206/black-shard-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
+  </footer>
+</main>
+</body>
+</html>

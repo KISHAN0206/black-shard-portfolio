@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Australian Data Breach Dashboard</title>
+<meta name="description" content="Australian notifiable data breaches, January 2024 to June 2026, from OAIC data. Prepared by Kishan Akabari.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--color-fg:#16202b;--color-fg-muted:#5b6672;--color-bg:#f6f7f9;--color-panel:#ffffff;--color-border-line:#dfe3e8;
+--color-ok:#1d7a4f;--color-warn:#a36a00;--color-bad:#b3261e;
+--font-sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;--font-serif:"Source Serif 4",Georgia,serif;
+--cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.1rem;--cds-font-size-title:2rem;--cds-font-weight-medium:600;
+--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:14px;--cds-gap-lg:20px;--cds-gap-xl:32px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:18px;--cds-radius:10px;
+--cds-chart-muted:#b9c2cc;--cds-chart-axis:#c7ced6;--cds-text-secondary:#5b6672;--cds-surface-popover:#ffffff;--cds-border:#d5dbe1;--cds-shadow-popover:0 6px 18px rgba(16,32,48,.14);
+--s0:#1f4e79;--s1:#e07a2f;--s2:#2a9d8f;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--color-fg:#e8edf2;--color-fg-muted:#9aa6b2;--color-bg:#0f151b;--color-panel:#17202a;--color-border-line:#2a3540;
+--color-ok:#5cc28e;--color-bad:#ff7a70;--cds-chart-muted:#4a5866;--cds-chart-axis:#3a4652;--cds-text-secondary:#9aa6b2;--cds-surface-popover:#1d2833;--cds-border:#334150;--cds-shadow-popover:0 6px 18px rgba(0,0,0,.5);
+--s0:#6aa9e0;--s1:#f0a060;--s2:#5cc2b5;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--color-bg);color:var(--color-fg);font-family:var(--font-sans);font-size:15px;
+padding:32px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1100px;margin:0 auto}
+
+.ndb { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-sans); color: var(--color-fg); }
+.ndb-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); max-width: 62rem; }
+.ndb-eyebrow { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); letter-spacing: .06em; text-transform: uppercase; margin: 0; }
+.ndb-title { font-family: var(--font-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+.ndb-lede { font-size: var(--cds-font-size-heading); line-height: 1.45; margin: 0; max-width: 46rem; }
+.ndb-lede b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; }
+.ndb-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--cds-gap-md); }
+.ndb-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
+.ndb-card h3 { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); letter-spacing: .03em; text-transform: uppercase; }
+.ndb-big { font-family: var(--font-serif); font-weight: 400; font-size: 2.4rem; line-height: 1.1; font-variant-numeric: tabular-nums; min-height: 2.6rem; }
+.ndb-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.ndb-chip { display: inline-block; padding: 1px 7px; border-radius: 999px; font-weight: var(--cds-font-weight-medium); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); }
+.ndb-chip.is-bad { color: var(--color-bad); border-color: currentColor; }
+.ndb-chip.is-ok { color: var(--color-ok); border-color: currentColor; }
+.ndb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(20rem, 40%)), 1fr)); gap: var(--cds-gap-lg); }
+.ndb-panel { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+.ndb-panel.wide { grid-column: 1 / -1; }
+.ndb-panel h2 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); text-wrap: balance; }
+.ndb-panel .ndb-note { margin: 0; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ndb-chart { position: relative; min-height: 12rem; }
+.ndb-chart.short { min-height: 8rem; }
+.ndb-empty { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: var(--cds-pad-md) 0; }
+[data-dash-source-state=refreshing] { opacity: .5; }
+
+/* vertical bars */
+.ndb-cols { display: flex; align-items: flex-end; gap: var(--cds-gap-sm); height: 13rem; border-bottom: 1px solid var(--cds-chart-axis); padding-top: 1.4rem; }
+.ndb-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
+.ndb-col-val { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; margin-bottom: 4px; color: var(--color-fg); }
+.ndb-col-bar { width: min(100%, 4.5rem); border-radius: 3px 3px 0 0; }
+.ndb-col-labels { display: flex; gap: var(--cds-gap-sm); margin-top: 6px; }
+.ndb-col-labels span { flex: 1 1 0; text-align: center; font-size: var(--cds-font-size-caption); color: var(--cds-text-secondary); line-height: 1.25; min-width: 0; }
+
+/* horizontal bars */
+.ndb-rows { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.ndb-row { display: flex; flex-direction: column; gap: 3px; }
+.ndb-row-label { font-size: var(--cds-font-size-caption); color: var(--color-fg); }
+.ndb-track { display: flex; align-items: center; gap: 6px; }
+.ndb-fill { height: 14px; border-radius: 0 3px 3px 0; min-width: 2px; }
+.ndb-val { font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* stacked share */
+.ndb-stack { display: flex; height: 26px; border-radius: 3px; overflow: hidden; }
+.ndb-seg { display: flex; align-items: center; justify-content: center; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; color: var(--color-bg); overflow: hidden; white-space: nowrap; }
+
+.ndb-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.ndb-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.ndb-sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+.ndb-tip { position: absolute; z-index: 5; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 9px; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; max-width: 16rem; }
+.ndb-tip-h { font-weight: var(--cds-font-weight-medium); margin-bottom: 2px; }
+.ndb-tip div + div { color: var(--cds-text-secondary); }
+
+.ndb-insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, max(14rem, 22%)), 1fr)); gap: var(--cds-gap-md); }
+.ndb-insight { border-top: 2px solid var(--color-fg); padding-top: var(--cds-pad-sm); display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.ndb-insight h3 { margin: 0; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.ndb-insight p { margin: 0; font-size: var(--cds-font-size-body); line-height: 1.5; color: var(--color-fg-muted); }
+.ndb-insight b { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.ndb-foot { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+.ndb-foot details summary { cursor: pointer; color: var(--color-fg); }
+.ndb-foot ul { margin: var(--cds-gap-sm) 0 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 4px; }
+.ndb-foot a { color: inherit; }
+
+.ndb-seg{color:#fff}
+@media (max-width:600px){.ndb-col-labels span{font-size:.68rem}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<p style="margin:0 0 16px;font-size:.85rem"><a href="../" style="color:var(--color-fg-muted)">← All projects</a></p>
+
+<div class="ndb">
+  <header class="ndb-head" id="overview">
+    <p class="ndb-eyebrow">Notifiable Data Breaches scheme · OAIC · data to 30 June 2026</p>
+    <h1 class="ndb-title">Australian Data Breach Dashboard</h1>
+    <p class="ndb-lede" lang="en-AU">Australian organisations reported <b data-draw="leadLatest">—</b> data breaches in January to June 2026 (<b data-draw="leadChange">—</b> on the previous half-year), while breaches affecting over 1 million people went from <b data-draw="leadMegaPrev">—</b> to <b data-draw="leadMega">—</b>.</p>
+  </header>
+
+  <section class="ndb-kpis" id="kpis" aria-label="Key figures">
+    <div class="ndb-card" id="kpi-latest">
+      <h3>Notifications, Jan–Jun 2026</h3>
+      <div class="ndb-big" data-draw="kpiLatest">—</div>
+      <div class="ndb-sub"><span class="ndb-chip" data-draw="kpiLatestChange">—</span> vs Jul–Dec 2025</div>
+    </div>
+    <div class="ndb-card" id="kpi-annual">
+      <h3>Notifications, calendar 2025</h3>
+      <div class="ndb-big" data-draw="kpiAnnual">—</div>
+      <div class="ndb-sub"><span class="ndb-chip" data-draw="kpiAnnualChange">—</span> vs 2024, highest since the scheme began in 2018</div>
+    </div>
+    <div class="ndb-card" id="kpi-mega">
+      <h3>Breaches over 1 million people</h3>
+      <div class="ndb-big" data-draw="kpiMega">—</div>
+      <div class="ndb-sub">Jan–Jun 2026, up from <b data-draw="kpiMegaPrev">—</b> in Jul–Dec 2025</div>
+    </div>
+    <div class="ndb-card" id="kpi-health">
+      <h3>Most-breached sector</h3>
+      <div class="ndb-big" data-draw="kpiHealth">—</div>
+      <div class="ndb-sub"><span data-draw="kpiHealthName">—</span>, <span data-draw="kpiHealthShare">—</span> of all notifications, Jan–Jun 2026</div>
+    </div>
+  </section>
+
+  <section class="ndb-grid">
+    <article class="ndb-panel wide" id="trend">
+      <h2>Breach notifications per half-year</h2>
+      <p class="ndb-note">Notifications are holding near record levels; the latest half-year is highlighted.</p>
+      <div class="ndb-chart" data-draw="trend"></div>
+    </article>
+
+    <article class="ndb-panel" id="sectors">
+      <h2>Top 5 sectors, Jan–Jun 2026</h2>
+      <p class="ndb-note">Number of notifications by industry.</p>
+      <div class="ndb-chart" data-draw="sectors"></div>
+    </article>
+
+    <article class="ndb-panel" id="scale">
+      <h2>Large breaches are getting larger</h2>
+      <p class="ndb-note">Breaches by number of people affected, last two half-years.</p>
+      <div class="ndb-legend"><span><i class="ndb-sw" data-sw="1"></i>Jul–Dec 2025</span><span><i class="ndb-sw" data-sw="0"></i>Jan–Jun 2026</span></div>
+      <div class="ndb-chart" data-draw="scale"></div>
+    </article>
+
+    <article class="ndb-panel" id="causes">
+      <h2>What caused the breaches</h2>
+      <p class="ndb-note">Share of notifications by source of breach.</p>
+      <div class="ndb-legend"><span><i class="ndb-sw" data-sw="0"></i>Malicious or criminal attack</span><span><i class="ndb-sw" data-sw="1"></i>Human error</span><span><i class="ndb-sw" data-sw="2"></i>System fault</span><span><i class="ndb-sw" data-sw="muted"></i>Other or unknown</span></div>
+      <div class="ndb-chart short" data-draw="causes"></div>
+    </article>
+
+    <article class="ndb-panel" id="cyber">
+      <h2>How attackers got in</h2>
+      <p class="ndb-note">Cyber incident notifications by type, Jul–Dec 2024 (latest period with this breakdown).</p>
+      <div class="ndb-chart" data-draw="cyber"></div>
+    </article>
+  </section>
+
+  <section class="ndb-panel wide" id="insights">
+    <h2>What this means for Black Shard's clients</h2>
+    <div class="ndb-insights" lang="en-AU">
+      <div class="ndb-insight">
+        <h3>Health is the top target</h3>
+        <p><b data-draw="insHealth">—</b> lodge the most notifications. Medical practices such as cardiology clinics hold sensitive data and need Essential Eight controls and staff training.</p>
+      </div>
+      <div class="ndb-insight">
+        <h3>Stolen logins are the main way in</h3>
+        <p>Phishing and stolen credentials make up the largest cyber incident types. Multi-factor authentication, one of the Essential Eight, directly reduces this risk.</p>
+      </div>
+      <div class="ndb-insight">
+        <h3>People cause a large share</h3>
+        <p>Human error caused <b data-draw="insHuman">—</b> of notifications in Jul–Dec 2025, such as emails sent to the wrong person. Training and data-handling policies matter as much as technology.</p>
+      </div>
+      <div class="ndb-insight">
+        <h3>Breaches are bigger</h3>
+        <p>Breaches affecting over 1 million people nearly tripled. Fast incident response and breach remediation limit the damage when an attack succeeds.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ndb-foot" id="notes">
+    <span>Prepared by Kishan Akabari · Source: Office of the Australian Information Commissioner (OAIC), Notifiable Data Breaches scheme.</span>
+    <details>
+      <summary>Data notes and sources</summary>
+      <ul>
+        <li>A notifiable data breach is one likely to cause serious harm, which organisations covered by the Privacy Act must report to the OAIC and affected people.</li>
+        <li>OAIC revises counts after publication. Jul–Dec 2025 is 662 in the OAIC's latest release; the OAIC dataset used for breach causes counts 670 for the same period.</li>
+        <li>Jul–Dec 2024 system faults (about 12) are derived from the OAIC report's chart; "other or unknown" is the remainder of the 595 total.</li>
+        <li>The cyber incident type breakdown is the latest the OAIC has published in this form (Jul–Dec 2024).</li>
+        <li><a href="https://www.oaic.gov.au/news/media-centre/large-scale-data-breaches-on-the-rise,-latest-oaic-statistics-reveal" target="_blank" rel="noopener">OAIC: Large scale data breaches on the rise (Jan–Jun 2026, published 26 Oct 2026)</a></li>
+        <li><a href="https://www.oaic.gov.au/news/media-centre/data-breach-notifications-increase-to-all-time-high-in-2025,-new-ndb-stats-show" target="_blank" rel="noopener">OAIC: Data breach notifications increase to all-time high in 2025 (published 6 Jul 2026)</a></li>
+        <li><a href="https://www.oaic.gov.au/news/blog/latest-notifiable-data-breach-statistics-for-january-to-june-2025" target="_blank" rel="noopener">OAIC: Notifiable data breach statistics, January to June 2025</a></li>
+        <li><a href="https://www.oaic.gov.au/privacy/notifiable-data-breaches/notifiable-data-breaches-publications/notifiable-data-breaches-report-july-to-december-2024" target="_blank" rel="noopener">OAIC: Notifiable Data Breaches report, July to December 2024</a></li>
+        <li><a href="https://drewcam.github.io/cyber-landscape-au/compliance/ndb-stats" target="_blank" rel="noopener">Summary of the OAIC NDB dataset, July to December 2025 (data.gov.au)</a></li>
+      </ul>
+    </details>
+  </footer>
+</div>
+
+</main>
+
+<script>
+const DATA={
+ half_years:[{period:"Jan–Jun 2024",n:518},{period:"Jul–Dec 2024",n:595},{period:"Jan–Jun 2025",n:532},{period:"Jul–Dec 2025",n:662},{period:"Jan–Jun 2026",n:667}],
+ annual:[{year:2023,n:893},{year:2024,n:1113},{year:2025,n:1205}],
+ sectors:[{sector:"Health service providers",notifications:149},{sector:"Education",notifications:85},{sector:"Business and professional associations",notifications:79},{sector:"Financial services",notifications:51},{sector:"Personal services",notifications:51}],
+ breach_source:[{period:"Jul–Dec 2024",malicious_or_criminal:404,human_error:170,system_fault:12,other_or_unknown:9,total:595},{period:"Jul–Dec 2025",malicious_or_criminal:405,human_error:194,system_fault:35,other_or_unknown:36,total:670}],
+ cyber_types:[{type:"Phishing (compromised credentials)",notifications:84},{type:"Ransomware",notifications:60},{type:"Compromised or stolen credentials (method unknown)",notifications:51},{type:"Hacking",notifications:23},{type:"Brute-force attack",notifications:16},{type:"Malware",notifications:12}],
+ large_scale:[{size_band:"100,000 – 250,000 people",jul_dec_2025:3,jan_jun_2026:6},{size_band:"500,000 – 1,000,000 people",jul_dec_2025:0,jan_jun_2026:3},{size_band:"Over 1,000,000 people",jul_dec_2025:4,jan_jun_2026:11}]
+};
+const C=['var(--s0)','var(--s1)','var(--s2)'];
+const fmt=n=>n.toLocaleString('en-AU');
+const signed=(n,s='')=>(n>0?'+':n<0?'−':'')+fmt(Math.abs(n))+s;
+const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const hy=DATA.half_years, last=hy[hy.length-1], prev=hy[hy.length-2];
+const latestPct=+((last.n-prev.n)/prev.n*100).toFixed(1);
+const an=DATA.annual, annPct=+((an[2].n-an[1].n)/an[1].n*100).toFixed(1);
+const mega=DATA.large_scale[2], topSector=DATA.sectors[0];
+const shares=DATA.breach_source.map(r=>({period:r.period,malicious_pct:Math.round(r.malicious_or_criminal/r.total*100),human_pct:Math.round(r.human_error/r.total*100),system_pct:Math.round(r.system_fault/r.total*100),other_pct:Math.round(r.other_or_unknown/r.total*100)}));
+const vals={leadLatest:fmt(last.n),leadChange:signed(last.n-prev.n),leadMegaPrev:fmt(mega.jul_dec_2025),leadMega:fmt(mega.jan_jun_2026),
+ kpiLatest:fmt(last.n),kpiAnnual:fmt(an[2].n),kpiMega:fmt(mega.jan_jun_2026),kpiMegaPrev:fmt(mega.jul_dec_2025),kpiHealth:fmt(topSector.notifications),
+ kpiHealthName:topSector.sector,kpiHealthShare:Math.round(topSector.notifications/last.n*100)+'%',insHealth:topSector.sector,insHuman:shares[shares.length-1].human_pct+'%'};
+for(const [k,v] of Object.entries(vals)) document.querySelectorAll(`[data-draw="${k}"]`).forEach(e=>e.textContent=v);
+for(const [k,v] of [['kpiLatestChange',latestPct],['kpiAnnualChange',annPct]]) document.querySelectorAll(`[data-draw="${k}"]`).forEach(e=>{e.textContent=signed(v,'%');e.classList.add(v>0?'is-bad':'is-ok');});
+document.querySelectorAll('[data-sw]').forEach(sw=>{const k=sw.getAttribute('data-sw');sw.style.background=k==='muted'?'var(--cds-chart-muted)':C[+k];});
+function tip(el){const t=mk('div','ndb-tip');t.hidden=true;el.appendChild(t);return{bind(node,lines){const show=ev=>{t.replaceChildren(...lines.map((l,i)=>mk('div',i===0?'ndb-tip-h':'',l)));t.hidden=false;const r=el.getBoundingClientRect();const p=ev.touches?ev.touches[0]:ev;let x=p.clientX-r.left+12,y=p.clientY-r.top+12;if(x+t.offsetWidth>r.width)x=Math.max(0,p.clientX-r.left-t.offsetWidth-12);t.style.left=x+'px';t.style.top=y+'px';};node.addEventListener('mousemove',show);node.addEventListener('touchstart',show,{passive:true});node.addEventListener('mouseleave',()=>t.hidden=true);}};}
+function hbars(el,rows,label,series,aria,unit){const max=Math.max(...rows.flatMap(r=>series.map(s=>r[s.key])))||1;const box=mk('div','ndb-rows');box.setAttribute('role','img');box.setAttribute('aria-label',aria);const t=tip(el);
+ rows.forEach(r=>{const row=mk('div','ndb-row');row.appendChild(mk('div','ndb-row-label',r[label]));series.forEach(s=>{const v=r[s.key];const tr=mk('div','ndb-track');const f=mk('div','ndb-fill');f.style.width=`calc((100% - 3.5rem) * ${v/max})`;f.style.background=s.color;tr.append(f,mk('span','ndb-val',fmt(v)));t.bind(tr,[r[label],`${s.name?s.name+': ':''}${fmt(v)} ${unit}`]);row.appendChild(tr);});box.appendChild(row);});
+ el.insertBefore(box,el.firstChild);}
+const draw=n=>document.querySelector(`[data-draw="${n}"]`);
+(()=>{const el=draw('trend');const max=Math.max(...hy.map(r=>r.n));const t=tip(el);const cols=mk('div','ndb-cols');cols.setAttribute('role','img');cols.setAttribute('aria-label','Breach notifications per half-year: '+hy.map(r=>`${r.period} ${fmt(r.n)}`).join(', '));const labels=mk('div','ndb-col-labels');
+ hy.forEach((r,i)=>{const c=mk('div','ndb-col');const bar=mk('div','ndb-col-bar');bar.style.height=(r.n/max*100)+'%';bar.style.background=i===hy.length-1?C[0]:'var(--cds-chart-muted)';c.append(mk('div','ndb-col-val',fmt(r.n)),bar);const p=hy[i-1];t.bind(c,[r.period,`${fmt(r.n)} notifications`,p?`${signed(r.n-p.n)} on ${p.period}`:'First period shown']);cols.appendChild(c);labels.appendChild(mk('span',null,r.period));});
+ el.insertBefore(labels,el.firstChild);el.insertBefore(cols,labels);})();
+hbars(draw('sectors'),DATA.sectors,'sector',[{key:'notifications',name:'',color:C[0]}],'Top five sectors by breach notifications, January to June 2026','notifications');
+hbars(draw('scale'),DATA.large_scale,'size_band',[{key:'jul_dec_2025',name:'Jul–Dec 2025',color:C[1]},{key:'jan_jun_2026',name:'Jan–Jun 2026',color:C[0]}],'Breaches by number of people affected','breaches');
+hbars(draw('cyber'),DATA.cyber_types,'type',[{key:'notifications',name:'',color:C[0]}],'Cyber incident notifications by type, July to December 2024','notifications');
+(()=>{const el=draw('causes');const parts=[{key:'malicious_or_criminal',pct:'malicious_pct',name:'Malicious or criminal attack',color:C[0]},{key:'human_error',pct:'human_pct',name:'Human error',color:C[1]},{key:'system_fault',pct:'system_pct',name:'System fault',color:C[2]},{key:'other_or_unknown',pct:'other_pct',name:'Other or unknown',color:'var(--cds-chart-muted)'}];
+ const t=tip(el);const box=mk('div','ndb-rows');box.setAttribute('role','img');box.setAttribute('aria-label','Share of breach notifications by cause: '+shares.map(s=>`${s.period}: malicious ${s.malicious_pct}%, human error ${s.human_pct}%`).join('; '));
+ DATA.breach_source.forEach((r,i)=>{const s=shares[i];const row=mk('div','ndb-row');row.appendChild(mk('div','ndb-row-label',`${r.period} · ${fmt(r.total)} notifications`));const bar=mk('div','ndb-stack');parts.forEach(p=>{const v=r[p.key],pc=s[p.pct];const seg=mk('div','ndb-seg',pc>=9?pc+'%':'');seg.style.width=(v/r.total*100)+'%';seg.style.background=p.color;t.bind(seg,[p.name,`${r.period}: ${fmt(v)} (${pc}%)`]);bar.appendChild(seg);});row.appendChild(bar);box.appendChild(row);});
+ el.insertBefore(box,el.firstChild);})();
+</script>
+</body>
+</html>
