@@ -6,59 +6,181 @@
 <title>Kishan Akabari Portfolio</title>
 <meta name="description" content="Data and cyber security analytics portfolio by Kishan Akabari.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f7f9;--panel:#fff;--fg:#16202b;--muted:#5b6672;--line:#dfe3e8;--accent:#1f4e79;--ok:#1d7a4f;
---sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Source Serif 4",Georgia,serif;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#0f151b;--panel:#17202a;--fg:#e8edf2;--muted:#9aa6b2;--line:#2a3540;--accent:#6aa9e0;--ok:#5cc28e;color-scheme:dark}}
+:root{--bg:#f4f6f9;--panel:#ffffff;--fg:#16202b;--muted:#5b6672;--line:#dfe3e8;--accent:#1f4e79;--accent2:#e07a2f;--ok:#1d7a4f;--node:31,78,121;
+--sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Source Serif 4",Georgia,serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0d1319;--panel:#151e27;--fg:#e8edf2;--muted:#9aa6b2;--line:#26323d;--accent:#6aa9e0;--accent2:#f0a060;--ok:#5cc28e;--node:106,169,224;color-scheme:dark}}
 *{box-sizing:border-box}
+html,body{min-height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.5;
-padding:48px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
-.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
-.eyebrow{margin:0;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,2.8rem);line-height:1.1;margin:6px 0 10px;text-wrap:balance}
+padding:56px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px));position:relative;overflow-x:hidden}
+#net{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+
+.eyebrow{margin:0;font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:var(--accent);min-height:1.2em}
+.eyebrow .caret{display:inline-block;width:.55em;height:1em;background:var(--accent);vertical-align:-2px;margin-left:2px;animation:blink 1s steps(1) infinite}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.2rem,6vw,3.2rem);line-height:1.05;margin:10px 0 12px;text-wrap:balance}
 .lede{margin:0;color:var(--muted);max-width:40rem;font-size:1.05rem}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:12px}
+.stat{background:color-mix(in srgb,var(--panel) 85%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:1.9rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted)}
+
+.section-h{margin:0 0 -22px;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .list{display:flex;flex-direction:column;gap:14px}
-.proj{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;text-decoration:none;color:inherit}
-a.proj:hover,a.proj:focus-visible{border-color:var(--accent);outline:none}
-.num{grid-row:span 3;font-family:var(--serif);font-size:1.6rem;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2}
-.proj h2{margin:0;font-size:1.1rem;font-weight:600}
+.proj{position:relative;display:grid;grid-template-columns:auto 1fr;gap:4px 18px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+ border:1px solid var(--line);border-radius:14px;padding:22px 24px;text-decoration:none;color:inherit;overflow:hidden;
+ transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.proj::before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--accent) 12%,transparent),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.proj:hover,.proj:focus-visible{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px -12px rgba(var(--node),.45);outline:none}
+.proj:hover::before,.proj:focus-visible::before{opacity:1}
+.num{grid-row:span 3;font-family:var(--serif);font-size:1.7rem;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.2;transition:color .25s}
+.proj:hover .num{color:var(--accent)}
+.proj h2{margin:0;font-size:1.12rem;font-weight:600}
 .proj p{margin:0;color:var(--muted);font-size:.95rem}
-.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted);margin-top:6px}
-.tag{color:var(--ok);font-weight:600}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.tag{color:var(--ok);font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.tag::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2s ease-in-out infinite}
+.tag.soon{color:var(--muted)}
+.tag.soon::before{animation:none;background:transparent;border:1px solid currentColor}
 .cta{color:var(--accent);font-weight:600}
+.cta i{display:inline-block;font-style:normal;transition:transform .25s}
+.proj:hover .cta i{transform:translateX(4px)}
+.proj.upcoming{background:transparent;border-style:dashed;pointer-events:none}
+
 footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
 footer a{color:inherit}
+
+/* entrance */
+.rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:var(--d,0s)}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes blink{50%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){
+ .rise{opacity:1;transform:none;animation:none}
+ .eyebrow .caret,.tag::before{animation:none}
+ .proj,.cta i{transition:none}
+ #net{display:none}
+}
 </style>
 </head>
 <body>
+<canvas id="net" aria-hidden="true"></canvas>
 <main class="wrap">
   <header>
-    <p class="eyebrow">Data &amp; cyber security analytics</p>
-    <h1>Kishan Akabari</h1>
-    <p class="lede">Dashboards and analysis built from public Australian breach, vulnerability and compliance data, turning security information into clear insights for decision-makers.</p>
+    <p class="eyebrow rise" style="--d:.05s"><span id="typed">Data &amp; cyber security analytics</span><span class="caret" aria-hidden="true"></span></p>
+    <h1 class="rise" style="--d:.15s">Kishan Akabari</h1>
+    <p class="lede rise" style="--d:.25s">Dashboards and analysis built from public Australian breach, vulnerability and compliance data, turning security information into clear insights for decision-makers.</p>
   </header>
 
+  <section class="stats" aria-label="Portfolio at a glance">
+    <div class="stat rise" style="--d:.35s"><b data-count="2">2</b><span>projects completed</span></div>
+    <div class="stat rise" style="--d:.42s"><b data-count="1779">1,779</b><span>exploited vulnerabilities analysed</span></div>
+    <div class="stat rise" style="--d:.49s"><b data-count="2974">2,974</b><span>data breach notifications analysed</span></div>
+    <div class="stat rise" style="--d:.56s"><b data-count="30">30</b><span>months of breach data (OAIC)</span></div>
+  </section>
+
+  <p class="section-h rise" style="--d:.6s">Projects</p>
   <section class="list" aria-label="Projects">
-    <a class="proj" href="data-breach-dashboard/">
+    <a class="proj rise" style="--d:.68s" href="data-breach-dashboard/">
       <span class="num">01</span>
       <h2>Australian Data Breach Dashboard</h2>
       <p>Notifiable data breaches from January 2024 to June 2026: trends, most-breached sectors, breach size, causes and attack types, with insights for cyber security clients.</p>
-      <div class="meta"><span class="tag">Completed</span><span>Data: OAIC Notifiable Data Breaches scheme</span><span class="cta">View dashboard →</span></div>
+      <div class="meta"><span class="tag">Completed</span><span>Data: OAIC Notifiable Data Breaches scheme</span><span class="cta">View dashboard <i>→</i></span></div>
     </a>
-    <a class="proj" href="exploited-vulnerabilities/">
+    <a class="proj rise" style="--d:.78s" href="exploited-vulnerabilities/">
       <span class="num">02</span>
       <h2>Exploited Vulnerabilities Dashboard</h2>
       <p>Interactive dashboard of the vendors and products attackers actively exploit: 1,779 vulnerabilities from the CISA catalog with filters, drill-down and a searchable list. Covers ransomware links, weakness types and the latest additions, with patching priorities for clients.</p>
-      <div class="meta"><span class="tag">Completed</span><span>Data: CISA Known Exploited Vulnerabilities catalog</span><span class="cta">View dashboard →</span></div>
+      <div class="meta"><span class="tag">Completed</span><span>Data: CISA Known Exploited Vulnerabilities catalog</span><span class="cta">View dashboard <i>→</i></span></div>
     </a>
+    <div class="proj upcoming rise" style="--d:.88s" aria-label="Upcoming project">
+      <span class="num">03</span>
+      <h2>Essential Eight Readiness Scorecard</h2>
+      <p>A self-assessment tool that turns answers into a maturity score and a prioritised gap report.</p>
+      <div class="meta"><span class="tag soon">In progress</span></div>
+    </div>
   </section>
 
-  <footer>
+  <footer class="rise" style="--d:.95s">
     Master of Business Analytics student, Victoria University, Brisbane ·
     <a href="https://www.linkedin.com/in/kishan-akabari-833692234/" target="_blank" rel="noopener">LinkedIn</a> ·
     <a href="https://github.com/KISHAN0206/black-shard-portfolio" target="_blank" rel="noopener">Source on GitHub</a>
   </footer>
 </main>
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // count-up stats
+  const fmt = n => Math.round(n).toLocaleString('en-AU');
+  if (!reduce) document.querySelectorAll('[data-count]').forEach((el, i) => {
+    const to = +el.dataset.count; el.textContent = '0';
+    const start = performance.now() + 450 + i * 70, dur = 1200;
+    const step = t => { const p = Math.max(0, Math.min(1, (t - start) / dur)); el.textContent = fmt(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+
+  // typing eyebrow
+  const typed = document.getElementById('typed');
+  if (!reduce && typed) {
+    const full = typed.textContent; typed.textContent = ''; let i = 0;
+    const tick = () => { typed.textContent = full.slice(0, ++i); if (i < full.length) setTimeout(tick, 38); };
+    setTimeout(tick, 250);
+  }
+
+  // card spotlight follows the pointer
+  document.querySelectorAll('a.proj').forEach(card => card.addEventListener('pointermove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }));
+
+  // background: drifting network of nodes
+  const cv = document.getElementById('net');
+  if (reduce || !cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, dpr, nodes = [], mouse = { x: -999, y: -999 };
+  const rgb = () => getComputedStyle(document.documentElement).getPropertyValue('--node').trim() || '31,78,121';
+  function size() {
+    dpr = Math.min(2, window.devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round(Math.min(70, (W * H) / 18000));
+    nodes = Array.from({ length: count }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .25, vy: (Math.random() - .5) * .25, alert: Math.random() < .06 }));
+  }
+  size(); addEventListener('resize', size);
+  addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  addEventListener('pointerleave', () => { mouse.x = mouse.y = -999; });
+  let col = rgb(); matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => col = rgb());
+  const LINK = 130;
+  let running = true; document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) requestAnimationFrame(frame); });
+  function frame(t) {
+    if (!running) return;
+    ctx.clearRect(0, 0, W, H);
+    for (const n of nodes) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < -20) n.x = W + 20; if (n.x > W + 20) n.x = -20; if (n.y < -20) n.y = H + 20; if (n.y > H + 20) n.y = -20;
+      const dx = n.x - mouse.x, dy = n.y - mouse.y, dm = Math.hypot(dx, dy);
+      if (dm < 120) { n.x += dx / dm * .6; n.y += dy / dm * .6; }
+    }
+    for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d < LINK) { ctx.strokeStyle = `rgba(${col},${(1 - d / LINK) * .22})`; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); }
+    }
+    for (const n of nodes) {
+      if (n.alert) {
+        const p = (Math.sin(t / 600 + n.x) + 1) / 2;
+        ctx.fillStyle = `rgba(224,122,47,${.15 + p * .25})`; ctx.beginPath(); ctx.arc(n.x, n.y, 4 + p * 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(224,122,47,.9)';
+      } else ctx.fillStyle = `rgba(${col},.55)`;
+      ctx.beginPath(); ctx.arc(n.x, n.y, 2, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
