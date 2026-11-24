@@ -4,6 +4,8 @@ Dashboards and analysis built from public Australian cyber security, breach and 
 
 **Portfolio site:** https://kishan0206.github.io/black-shard-portfolio/
 
+**3D Project City:** https://kishan0206.github.io/black-shard-portfolio/world/ (drive or walk around a small 3D city where each building is a project; works on desktop and phone)
+
 | Project | What it shows | Link |
 | --- | --- | --- |
 | Australian Data Breach Dashboard | Notifiable data breaches Jan 2024 – Jun 2026: trends, sectors, breach size, causes and attack types (OAIC data) | [View](https://kishan0206.github.io/black-shard-portfolio/data-breach-dashboard/) · [Code & data](data-breach-dashboard/) |
