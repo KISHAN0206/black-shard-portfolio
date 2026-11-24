@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Essential Eight Readiness Scorecard</title>
+<meta name="description" content="Self-assessment against the ASD Essential Eight maturity model: maturity level per strategy and a prioritised gap report. Prepared by Kishan Akabari.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--fg:#16202b;--muted:#5b6672;--bg:#f6f7f9;--panel:#ffffff;--line:#dfe3e8;--ok:#1d7a4f;--warn:#a36a00;--bad:#b3261e;
+--sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Source Serif 4",Georgia,serif;
+--l0:#c9d1d9;--l1:#e07a2f;--l2:#2a9d8f;--l3:#1f4e79;--accent:#1f4e79;--track:#e8ecf0;--radius:10px;
+--sel-yes:#1d7a4f;--sel-part:#a36a00;--sel-no:#b3261e;--sel-unsure:#5b6672;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--fg:#e8edf2;--muted:#9aa6b2;--bg:#0f151b;--panel:#17202a;--line:#2a3540;--ok:#5cc28e;--warn:#e0b050;--bad:#ff7a70;
+--l0:#3a4652;--l1:#f0a060;--l2:#5cc2b5;--l3:#6aa9e0;--accent:#6aa9e0;--track:#222d38;
+--sel-yes:#5cc28e;--sel-part:#e0b050;--sel-no:#ff7a70;--sel-unsure:#9aa6b2;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;
+padding:32px max(16px,env(safe-area-inset-right,0px)) 48px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+a{color:inherit}
+.back{margin:0;font-size:.85rem;color:var(--muted)}
+.eyebrow{margin:0;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4.5vw,2.4rem);line-height:1.1;margin:6px 0 10px;text-wrap:balance}
+.lede{margin:0;max-width:46rem;font-size:1.05rem;color:var(--muted)}
+.lede b{color:var(--fg)}
+.notice{border:1px solid var(--line);border-left:3px solid var(--warn);background:var(--panel);border-radius:var(--radius);padding:12px 16px;font-size:.88rem;max-width:62rem}
+.notice b{font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;min-width:0}
+h2{margin:0 0 4px;font-size:1.1rem;font-weight:600}
+.note{margin:0;font-size:.82rem;color:var(--muted)}
+
+/* toolbar */
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;
+ background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+ border:1px solid var(--line);border-radius:var(--radius);padding:10px 14px}
+.toolbar label{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--muted)}
+select{font:inherit;font-size:.85rem;color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+.btn{font:inherit;font-size:.82rem;background:transparent;border:1px solid var(--line);color:var(--fg);border-radius:999px;padding:6px 13px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+.progress{flex:1 1 10rem;min-width:0;display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.progress-bar{flex:1;height:6px;background:var(--track);border-radius:999px;overflow:hidden}
+.progress-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* results */
+.results{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:760px){.results{grid-template-columns:1fr}}
+.overall{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.ring{position:relative;width:170px;height:170px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bg{fill:none;stroke:var(--track);stroke-width:14}
+.ring .fg{fill:none;stroke:var(--l0);stroke-width:14;stroke-linecap:round;transition:stroke-dashoffset .9s cubic-bezier(.2,.8,.2,1),stroke .4s}
+.ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-label b{font-family:var(--serif);font-weight:400;font-size:2.8rem;line-height:1}
+.ring-label span{font-size:.75rem;color:var(--muted);letter-spacing:.05em;text-transform:uppercase}
+.verdict{font-size:.92rem;max-width:15rem}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid currentColor;white-space:nowrap}
+.chip.ok{color:var(--ok)}.chip.bad{color:var(--bad)}.chip.warn{color:var(--warn)}
+
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:grid;grid-template-columns:minmax(8rem,13rem) minmax(0,1fr) 3.2rem;gap:10px;align-items:center;cursor:pointer;border-radius:6px;padding:2px 4px;margin:0 -4px}
+.bar-row:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+@media (max-width:520px){.bar-row{grid-template-columns:1fr 3.2rem}.bar-row .track{grid-column:1 / -1;grid-row:2}}
+.bar-name{font-size:.85rem;min-width:0}
+.track{position:relative;height:16px;background:var(--track);border-radius:4px}
+.track .fill{position:absolute;inset:0 auto 0 0;width:0;border-radius:4px;transition:width .8s cubic-bezier(.2,.8,.2,1),background-color .3s}
+.track .tick{position:absolute;top:-3px;bottom:-3px;width:0;border-left:1px dashed color-mix(in srgb,var(--fg) 25%,transparent)}
+.track .target{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--fg);border-radius:1px;transition:left .5s}
+.bar-lvl{font-size:.82rem;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.scale{display:grid;grid-template-columns:minmax(8rem,13rem) minmax(0,1fr) 3.2rem;gap:10px;font-size:.72rem;color:var(--muted)}
+.scale div{display:flex;justify-content:space-between}
+@media (max-width:520px){.scale{grid-template-columns:1fr}.scale>span:first-child,.scale>span:last-child{display:none}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.75rem;color:var(--muted);margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px}
+
+/* assessment */
+.strategies{display:flex;flex-direction:column;gap:12px}
+details.strat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+details.strat[open]{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+details.strat summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 18px}
+details.strat summary::-webkit-details-marker{display:none}
+.snum{font-family:var(--serif);font-size:1.4rem;color:var(--muted);line-height:1}
+.stitle b{display:block;font-size:1rem;font-weight:600}
+.stitle span{font-size:.8rem;color:var(--muted)}
+.sstate{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.lvl-pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.75rem;font-weight:600;color:#fff;background:var(--l0);transition:background-color .3s}
+.lvl-pill.l0{color:var(--fg)}
+.chev{transition:transform .25s;color:var(--muted)}
+details[open] .chev{transform:rotate(180deg)}
+.sbody{padding:0 18px 16px;display:flex;flex-direction:column;gap:14px}
+.why{margin:0;font-size:.85rem;color:var(--muted);max-width:52rem}
+.lvl-h{margin:4px 0 0;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:8px}
+.lvl-h::after{content:"";flex:1;border-top:1px solid var(--line)}
+.q{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:8px 0}
+@media (max-width:640px){.q{grid-template-columns:1fr}}
+.q p{margin:0;font-size:.9rem}
+.q small{display:block;font-size:.72rem;color:var(--muted);margin-top:2px}
+.q-same{font-size:.85rem;color:var(--muted);margin:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:.8rem;background:transparent;border:0;border-right:1px solid var(--line);color:var(--fg);padding:6px 11px;cursor:pointer;transition:background-color .2s,color .2s}
+.seg button:last-child{border-right:0}
+.seg button:hover{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.seg button[aria-pressed=true][data-v=yes]{background:var(--sel-yes);color:var(--panel)}
+.seg button[aria-pressed=true][data-v=part]{background:var(--sel-part);color:var(--panel)}
+.seg button[aria-pressed=true][data-v=no]{background:var(--sel-no);color:var(--panel)}
+.seg button[aria-pressed=true][data-v=unsure]{background:var(--sel-unsure);color:var(--panel)}
+
+/* gaps */
+.gaps{display:flex;flex-direction:column;gap:10px;counter-reset:gap}
+.gap{display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:4px 12px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line);animation:fadeUp .4s ease-out both}
+.gap::before{counter-increment:gap;content:counter(gap);font-family:var(--serif);font-size:1.2rem;color:var(--muted);line-height:1.3}
+.gap b{font-size:.9rem;font-weight:600;display:block}
+.gap p{margin:0;font-size:.86rem;color:var(--muted)}
+.gap .meta{font-size:.72rem;color:var(--muted);margin-top:2px}
+.empty{color:var(--muted);font-size:.9rem;padding:8px 0}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:.85rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:50}
+.toast.show{opacity:1}
+
+footer{font-size:.8rem;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+footer ul{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px}
+details.foot summary{cursor:pointer;color:var(--fg)}
+
+.rise{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+@media print{
+ body{background:#fff;color:#000;padding:0}
+ .toolbar,.actions,.back,#assessment,.notice,footer details,.legend{display:none!important}
+ .panel{border:0;padding:0}
+ .rise,.gap{animation:none!important}
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="back rise"><a href="../">← All projects</a></p>
+
+  <header class="rise" style="--d:.05s">
+    <p class="eyebrow">ASD Essential Eight maturity model · self-assessment</p>
+    <h1>Essential Eight Readiness Scorecard</h1>
+    <p class="lede">Answer <b>46 plain-English questions</b> about the eight mitigation strategies. The scorecard works out the <b>maturity level</b> you meet for each one, your <b>overall level</b>, and a <b>prioritised list of gaps</b> to reach your target. It takes about 10 minutes.</p>
+  </header>
+
+  <div class="notice rise" style="--d:.1s" role="note">
+    <b>Framework status, November 2026.</b> ASD launched <b>ASD Essentials</b> in October 2026 as the evolution of the Essential Eight. During the transition ASD continues to maintain the Essential Eight (maturity model, November 2023), so assessments against it still stand. Essential Eight ratings do not convert into Essentials ratings, so organisations will need a fresh assessment under the new framework.
+  </div>
+
+  <div class="toolbar rise" style="--d:.15s" role="region" aria-label="Assessment controls">
+    <label for="target">Target <select id="target"><option value="1">Maturity Level One</option><option value="2" selected>Maturity Level Two</option><option value="3">Maturity Level Three</option></select></label>
+    <div class="progress" aria-live="polite"><span id="answered">0 of 46 answered</span><span class="progress-bar" aria-hidden="true"><i id="pbar"></i></span></div>
+    <button class="btn" id="example" type="button">Load example client</button>
+    <button class="btn" id="reset" type="button">Start again</button>
+  </div>
+
+  <section class="panel rise" style="--d:.2s" id="results" aria-labelledby="res-h">
+    <h2 id="res-h">Your maturity profile</h2>
+    <p class="note" id="client-note">Answers are saved in this browser only. Nothing is sent anywhere.</p>
+    <div class="results" style="margin-top:14px">
+      <div class="overall">
+        <div class="ring" role="img" id="ring" aria-label="Overall maturity level 0">
+          <svg viewBox="0 0 170 170"><circle class="bg" cx="85" cy="85" r="70"/><circle class="fg" id="ring-fg" cx="85" cy="85" r="70"/></svg>
+          <div class="ring-label"><span>Overall</span><b id="overall">0</b><span>Maturity level</span></div>
+        </div>
+        <div class="verdict" id="verdict">Start answering to see your profile.</div>
+      </div>
+      <div>
+        <div class="scale" aria-hidden="true"><span></span><div><span>0</span><span>1</span><span>2</span><span>3</span></div><span></span></div>
+        <div class="bars" id="bars"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--l1)"></i>Level One</span>
+          <span><i class="sw" style="background:var(--l2)"></i>Level Two</span>
+          <span><i class="sw" style="background:var(--l3)"></i>Level Three</span>
+          <span><i class="sw" style="background:var(--fg);width:2px"></i>Your target</span>
+          <span>Click a strategy to jump to its questions.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="assessment" class="rise" style="--d:.25s" aria-labelledby="as-h">
+    <h2 id="as-h">Assessment</h2>
+    <p class="note" style="margin-bottom:12px">For each statement choose Yes (fully in place), Partly, No, or Not sure. A level is met only when every statement at that level and below is a full Yes. "Partly" and "Not sure" count as gaps.</p>
+    <div class="strategies" id="strategies"></div>
+  </section>
+
+  <section class="panel rise" style="--d:.3s" id="gaps-panel" aria-labelledby="gap-h">
+    <h2 id="gap-h">Prioritised gap report</h2>
+    <p class="note" id="gap-note">Gaps between your answers and your target, lowest level first, because each level builds on the one below.</p>
+    <div class="gaps" id="gaps" style="margin-top:10px"></div>
+    <div class="actions" style="margin-top:14px">
+      <button class="btn primary" id="copy" type="button">Copy report</button>
+      <button class="btn" id="print" type="button">Print or save as PDF</button>
+    </div>
+  </section>
+
+  <footer>
+    <span>Prepared by Kishan Akabari · Based on the Australian Signals Directorate (ASD) Essential Eight maturity model (November 2023) and its ISM mapping. This is a self-assessment aid, not a formal Essential Eight assessment.</span>
+    <details class="foot">
+      <summary>How the scoring works and sources</summary>
+      <ul>
+        <li>Each statement summarises one or more ASD requirements; the ISM control numbers are shown under each question.</li>
+        <li>A strategy reaches a level only when every requirement at that level and the levels below is fully met. The overall level is the lowest level across all eight strategies, which is how ASD reports overall maturity.</li>
+        <li>For patching operating systems, Maturity Level Two has no requirements beyond Level One, so meeting Level One also meets Level Two.</li>
+        <li>Logging, log analysis and incident response requirements that ASD repeats across strategies at Levels Two and Three are folded into the most relevant questions.</li>
+        <li><a href="https://www.cyber.gov.au/node/1923" target="_blank" rel="noopener">ASD: Essential Eight maturity model and ISM mapping</a> · <a href="https://www.cyber.gov.au/publication/essential-eight-maturity-model-changes" target="_blank" rel="noopener">ASD: Essential Eight maturity model changes (November 2023)</a> · <a href="https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience" target="_blank" rel="noopener">ASD: ASD Essentials announcement</a></li>
+      </ul>
+    </details>
+  </footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const S = [
+ {id:'pa',name:'Patch applications',why:'Fix security flaws in apps quickly, before attackers use them to get in.',q:[
+  [1,'Automated asset discovery runs at least fortnightly, and a vulnerability scanner with an up-to-date database is used.','ISM-1807, 1808'],
+  [1,'Internet-facing online services are scanned daily and patched within 48 hours if critical or exploited, otherwise within two weeks.','ISM-1698, 1876, 1690'],
+  [1,'Office suites, browsers, email clients, PDF and security software are scanned weekly, patched within two weeks, and unsupported versions removed.','ISM-1699, 1691, 1704, 1905'],
+  [2,'All other applications are scanned at least fortnightly and patched within one month.','ISM-1700, 1693'],
+  [3,'Office suites, browsers, email clients, PDF and security software are patched within 48 hours when a flaw is critical or exploited.','ISM-1692, 1901'],
+  [3,'Every other application that is no longer supported by its vendor is removed.','ISM-0304']]},
+ {id:'po',name:'Patch operating systems',why:'Keep Windows, servers and network devices patched so known flaws cannot be exploited.',q:[
+  [1,'Internet-facing servers and network devices are scanned daily; workstations and internal servers at least fortnightly.','ISM-1701, 1702'],
+  [1,'Internet-facing operating systems are patched within 48 hours if critical or exploited, otherwise two weeks; workstations and internal servers within one month.','ISM-1877, 1694, 1695'],
+  [1,'Operating systems no longer supported by the vendor are replaced.','ISM-1501'],
+  [3,'Workstations and internal servers are patched within 48 hours when a flaw is critical or exploited.','ISM-1696, 1902'],
+  [3,'Drivers and firmware are scanned fortnightly and patched within 48 hours if critical or exploited, otherwise one month.','ISM-1703, 1900, 1879, 1697, 1903, 1904'],
+  [3,'Only the latest or previous release of each operating system is used.','ISM-1407']]},
+ {id:'mfa',name:'Multi-factor authentication',why:'Stop stolen passwords being enough to log in, the most common way attackers get in.',q:[
+  [1,'MFA protects your own and third-party online services that hold sensitive data (and other third-party services where available).','ISM-1504, 1679, 1680, 1401'],
+  [1,'Online customer services holding sensitive customer data require MFA for staff and customers.','ISM-1892, 1893, 1681'],
+  [2,'MFA is required for every user, privileged and unprivileged, signing in to your systems.','ISM-1173, 0974'],
+  [2,'MFA is phishing-resistant (e.g. passkeys, FIDO2 security keys, Windows Hello for Business), and customers are offered a phishing-resistant option.','ISM-1872, 1873, 1682'],
+  [2,'Successful and failed MFA events are centrally logged, protected and analysed promptly.','ISM-1683, 1815, 1228'],
+  [3,'Phishing-resistant MFA protects data repositories and is required for customers of online services.','ISM-1505, 1894, 1874']]},
+ {id:'ra',name:'Restrict administrative privileges',why:'Limit admin accounts so one compromised login cannot take over everything.',q:[
+  [1,'Admin access is approved when first requested, and admins use a separate account used only for admin duties.','ISM-1507, 0445'],
+  [1,'Admin accounts cannot browse the web or use email, and admin and everyday work happen in separate environments.','ISM-1175, 1883, 1380, 1688, 1689'],
+  [2,'Admin access is re-approved every 12 months and disabled after 45 days of inactivity.','ISM-1647, 1648'],
+  [2,'Admin work goes through jump servers, and break-glass, local admin and service account passwords are long, unique and managed.','ISM-1387, 1687, 1685'],
+  [2,'Privileged access and account or group changes are centrally logged.','ISM-1509, 1650'],
+  [3,'Just-in-time admin and Secure Admin Workstations are used, and access is limited to what each duty needs.','ISM-1649, 1898, 1508'],
+  [3,'Credential Guard, Remote Credential Guard, LSA protection and memory integrity are enabled.','ISM-1686, 1897, 1861, 1896']]},
+ {id:'ac',name:'Application control',why:'Only approved programs can run, so malware cannot simply be downloaded and launched.',q:[
+  [1,'Application control is on all workstations, covering user profiles and temporary folders, so only approved programs, scripts and installers run.','ISM-0843, 1870, 1657'],
+  [2,'Application control also covers internet-facing servers and all other file locations.','ISM-1490, 1871'],
+  [2,"Microsoft's recommended application blocklist is applied and rules are reviewed at least annually.",'ISM-1544, 1582'],
+  [2,'Allowed and blocked application events are centrally logged.','ISM-1660'],
+  [3,"Application control covers internal servers and drivers, including Microsoft's vulnerable driver blocklist.",'ISM-1656, 1658, 1659']]},
+ {id:'mo',name:'Restrict Microsoft Office macros',why:'Block malicious macros in documents, a classic way to deliver ransomware.',q:[
+  [1,'Macros are disabled for staff without a business need and blocked in files from the internet.','ISM-1671, 1488'],
+  [1,'Macro antivirus scanning is on, and users cannot change macro security settings.','ISM-1672, 1489'],
+  [2,'Macros are blocked from making Win32 API calls, and macro events are logged.','ISM-1673'],
+  [3,'Macros run only from a sandbox, a Trusted Location, or when signed by a trusted publisher, after being checked for malicious code.','ISM-1674, 1890, 1487'],
+  [3,'Users cannot enable macros from untrusted publishers, and the trusted publisher list is reviewed at least annually.','ISM-1675, 1891, 1676']]},
+ {id:'uh',name:'User application hardening',why:'Lock down browsers, Office and PDF readers so common attack paths are closed.',q:[
+  [1,'Internet Explorer 11 is disabled or removed.','ISM-1654'],
+  [1,'Browsers block Java and web advertisements from the internet, and users cannot change browser security settings.','ISM-1486, 1485, 1585'],
+  [2,'Browsers, Office and PDF software are hardened to ASD and vendor guidance, and users cannot change their security settings.','ISM-1412, 1859, 1860, 1823, 1824'],
+  [2,'Office and PDF software cannot create child processes, executable content or inject code, and OLE packages are blocked.','ISM-1667, 1668, 1669, 1670, 1542'],
+  [2,'PowerShell and command-line activity is centrally logged.','ISM-1623, 1889'],
+  [3,'.NET Framework 3.5 and Windows PowerShell 2.0 are removed, and PowerShell runs in Constrained Language Mode.','ISM-1655, 1621, 1622']]},
+ {id:'rb',name:'Regular backups',why:'Make sure you can recover from ransomware or data loss without paying anyone.',q:[
+  [1,'Backups of important data, software and settings are made and kept to match business continuity needs, and synchronised to a common point in time.','ISM-1511, 1810'],
+  [1,'Backups are stored securely and resiliently, and restoring them is tested in disaster recovery exercises.','ISM-1811, 1515'],
+  [1,'Normal users cannot access other people\'s backups or change or delete any backups.','ISM-1812, 1814'],
+  [2,'Admin accounts other than backup admins cannot access other accounts\' backups or change or delete backups.','ISM-1705, 1707'],
+  [3,'Users and non-backup admins cannot access even their own backups, and backup admins cannot change or delete backups during retention.','ISM-1813, 1706, 1708']]}
+];
+const LV=['Level Zero','Level One','Level Two','Level Three'];
+const TOTAL=S.reduce((n,s)=>n+s.q.length,0);
+const KEY='e8-scorecard-v1';
+let A={}, target=2;
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');A=saved.a||{};target=saved.t||2;}catch(e){}
+const $=id=>document.getElementById(id);
+const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify({a:A,t:target}));}catch(e){}};
+const qid=(s,i)=>s.id+i;
+
+function levelOf(s){
+  let lvl=0;
+  for(let L=1;L<=3;L++){
+    const qs=s.q.map((q,i)=>({q,i})).filter(x=>x.q[0]===L);
+    if(qs.every(x=>A[qid(s,x.i)]==='yes')) lvl=L; else break;
+  }
+  return lvl;
+}
+function partial(s){ // progress toward the next level, 0..1
+  const L=levelOf(s); if(L>=3) return 0;
+  const qs=s.q.map((q,i)=>({q,i})).filter(x=>x.q[0]===L+1);
+  if(!qs.length) return 0;
+  return qs.reduce((n,x)=>n+({yes:1,part:.5}[A[qid(s,x.i)]]||0),0)/qs.length;
+}
+const colorFor=L=>`var(--l${L})`;
+
+// build assessment
+function buildAssessment(){
+  const wrap=$('strategies'); wrap.replaceChildren();
+  S.forEach((s,si)=>{
+    const d=mk('details','strat'); d.id='s-'+s.id;
+    const sum=mk('summary');
+    sum.append(mk('span','snum',String(si+1)));
+    const t=mk('span','stitle'); t.append(mk('b',null,s.name),mk('span',null,s.why)); sum.append(t);
+    const st=mk('span','sstate'); st.innerHTML='';
+    const cnt=mk('span',null,''); cnt.id='cnt-'+s.id;
+    const pill=mk('span','lvl-pill l0','Level 0'); pill.id='pill-'+s.id;
+    const chev=mk('span','chev','▾'); chev.setAttribute('aria-hidden','true');
+    st.append(cnt,pill,chev); sum.append(st); d.append(sum);
+    const body=mk('div','sbody');
+    for(let L=1;L<=3;L++){
+      body.append(mk('p','lvl-h','Maturity '+LV[L]));
+      const qs=s.q.map((q,i)=>({q,i})).filter(x=>x.q[0]===L);
+      if(!qs.length){body.append(mk('p','q-same','No additional requirements at this level. Meeting the level below also meets this one.'));continue;}
+      qs.forEach(({q,i})=>{
+        const row=mk('div','q'); const p=mk('p',null,q[1]); p.append(mk('small',null,q[2])); row.append(p);
+        const seg=mk('div','seg'); seg.setAttribute('role','group'); seg.setAttribute('aria-label',q[1]);
+        [['yes','Yes'],['part','Partly'],['no','No'],['unsure','Not sure']].forEach(([v,l])=>{
+          const b=mk('button',null,l); b.type='button'; b.dataset.v=v; b.dataset.q=qid(s,i);
+          b.setAttribute('aria-pressed',A[qid(s,i)]===v?'true':'false');
+          b.onclick=()=>{A[qid(s,i)]=A[qid(s,i)]===v?undefined:v; if(!A[qid(s,i)])delete A[qid(s,i)];
+            seg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',A[qid(s,i)]===x.dataset.v?'true':'false'));save();update();};
+          seg.append(b);});
+        row.append(seg); body.append(row);});
+    }
+    d.append(body); wrap.append(d);
+  });
+}
+// results bars
+function buildBars(){
+  const wrap=$('bars'); wrap.replaceChildren();
+  S.forEach(s=>{
+    const r=mk('div','bar-row'); r.tabIndex=0; r.setAttribute('role','button');
+    const name=mk('span','bar-name',s.name);
+    const tr=mk('div','track'); tr.setAttribute('aria-hidden','true');
+    [1,2].forEach(k=>{const t=mk('i','tick');t.style.left=(k/3*100)+'%';tr.append(t);});
+    const f=mk('i','fill'); f.id='fill-'+s.id; const tg=mk('i','target'); tg.id='tg-'+s.id;
+    tr.append(f,tg);
+    const lv=mk('span','bar-lvl','L0'); lv.id='bl-'+s.id;
+    r.append(name,tr,lv);
+    const go=()=>{const d=$('s-'+s.id);d.open=true;d.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});};
+    r.onclick=go; r.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};
+    wrap.append(r);
+  });
+}
+function countUp(el,to){const from=+(el.dataset.v||0);el.dataset.v=to;if(reduce||from===to){el.textContent=to;return;}
+  const t0=performance.now();const step=t=>{const p=Math.min(1,(t-t0)/600);el.textContent=Math.round(from+(to-from)*p);if(p<1)requestAnimationFrame(step);};requestAnimationFrame(step);}
+
+function gapsList(){
+  const out=[];
+  S.forEach(s=>{
+    const cur=levelOf(s);
+    for(let L=cur+1;L<=target;L++){
+      s.q.forEach((q,i)=>{if(q[0]===L&&A[qid(s,i)]!=='yes')out.push({s,L,q,ans:A[qid(s,i)]});});
+    }
+  });
+  const order={no:0,unsure:1,undefined:2,part:3};
+  return out.sort((a,b)=>a.L-b.L||order[a.ans]-order[b.ans]||S.indexOf(a.s)-S.indexOf(b.s));
+}
+
+function update(){
+  const answered=Object.keys(A).length;
+  $('answered').textContent=`${answered} of ${TOTAL} answered`;
+  $('pbar').style.width=(answered/TOTAL*100)+'%';
+  const levels=S.map(levelOf); const overall=Math.min(...levels);
+  // ring
+  const C=2*Math.PI*70, fg=$('ring-fg');
+  fg.style.strokeDasharray=C; fg.style.strokeDashoffset=C*(1-overall/3); fg.style.stroke=colorFor(overall);
+  countUp($('overall'),overall);
+  $('ring').setAttribute('aria-label',`Overall maturity: ${LV[overall]}`);
+  const met=levels.filter(l=>l>=target).length;
+  const v=$('verdict'); v.replaceChildren();
+  if(!answered){v.textContent='Start answering to see your profile.';}
+  else{
+    const chip=mk('span','chip '+(overall>=target?'ok':met>=4?'warn':'bad'),overall>=target?'Target met':`Below target`);
+    v.append(chip,document.createElement('br'),document.createTextNode(`${met} of 8 strategies at or above Maturity ${LV[target]}. Overall level is the lowest of the eight.`));
+  }
+  S.forEach((s,i)=>{
+    const L=levels[i];
+    const f=$('fill-'+s.id); f.style.width=((L+partial(s)*0.98)/3*100)+'%'; f.style.background=colorFor(Math.max(L,1)); f.style.opacity=L?1:.55;
+    $('tg-'+s.id).style.left=`calc(${target/3*100}% - 1px)`;
+    const bl=$('bl-'+s.id); bl.textContent='L'+L; bl.style.color=L>=target?'var(--ok)':'var(--fg)';
+    const pill=$('pill-'+s.id); pill.textContent='Level '+L; pill.className='lvl-pill l'+L; pill.style.background=L?colorFor(L):'var(--l0)';
+    const n=s.q.filter((q,j)=>A[qid(s,j)]).length; $('cnt-'+s.id).textContent=`${n}/${s.q.length}`;
+  });
+  // gaps
+  const g=gapsList(), gw=$('gaps'); gw.replaceChildren();
+  $('gap-note').textContent=`Gaps between your answers and Maturity ${LV[target]}, lowest level first, because each level builds on the one below.`;
+  if(!answered){gw.append(mk('p','empty','Answer some questions, or load the example client, to see the gap report.'));}
+  else if(!g.length){gw.append(mk('p','empty',`No gaps: all eight strategies meet Maturity ${LV[target]}. Consider raising the target.`));}
+  else g.forEach((x,k)=>{
+    const d=mk('div','gap'); if(!reduce)d.style.animationDelay=Math.min(k,12)*0.03+'s';
+    const mid=mk('div'); mid.append(mk('b',null,x.s.name),mk('p',null,x.q[1]),mk('div','meta',`${x.q[2]} · needed for Maturity ${LV[x.L]}`));
+    const st={no:['No','bad'],unsure:['Not sure','warn'],part:['Partly','warn'],undefined:['Not answered','']}[x.ans];
+    d.append(mid,mk('span','chip '+st[1],st[0])); gw.append(d);
+  });
+  $('copy').disabled=!answered;
+}
+function reportText(){
+  const levels=S.map(levelOf),overall=Math.min(...levels),g=gapsList();
+  const lines=['ESSENTIAL EIGHT READINESS SCORECARD',`Target: Maturity ${LV[target]} · Overall: Maturity ${LV[overall]}`,'',
+    'Maturity by strategy:',...S.map((s,i)=>`- ${s.name}: ${LV[levels[i]]}${levels[i]>=target?' (meets target)':''}`),'',
+    `Prioritised gaps (${g.length}):`,...g.map((x,k)=>`${k+1}. [${x.s.name} · ${LV[x.L]}] ${x.q[1]} (${x.q[2]})`),'',
+    'Based on the ASD Essential Eight maturity model (November 2023). Self-assessment only, not a formal assessment.'];
+  return lines.join('\n');
+}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('show'),2200);}
+
+$('target').value=String(target);
+$('target').onchange=e=>{target=+e.target.value;save();update();};
+$('reset').onclick=()=>{A={};save();buildAssessment();update();$('client-note').textContent='Answers are saved in this browser only. Nothing is sent anywhere.';toast('Started again');};
+$('example').onclick=()=>{
+  // An example small business: decent basics, gaps at Level Two. Clearly an example, not real data.
+  const ex={pa0:'yes',pa1:'yes',pa2:'yes',pa3:'no',po0:'yes',po1:'yes',po2:'yes',po3:'no',po4:'no',po5:'yes',
+    mfa0:'yes',mfa1:'yes',mfa2:'yes',mfa3:'part',mfa4:'no',mfa5:'no',ra0:'yes',ra1:'yes',ra2:'no',ra3:'no',ra4:'unsure',ra5:'no',ra6:'no',
+    ac0:'yes',ac1:'part',ac2:'no',ac3:'no',ac4:'no',mo0:'yes',mo1:'yes',mo2:'unsure',mo3:'no',mo4:'no',
+    uh0:'yes',uh1:'yes',uh2:'part',uh3:'no',uh4:'no',uh5:'no',rb0:'yes',rb1:'yes',rb2:'yes',rb3:'no',rb4:'no'};
+  A=ex;save();buildAssessment();update();
+  $('client-note').textContent='Showing an example client (a typical small business on Microsoft 365). Start again to assess your own organisation.';
+  toast('Example client loaded');
+};
+$('copy').onclick=async()=>{const txt=reportText();try{await navigator.clipboard.writeText(txt);toast('Report copied');}catch(e){const ta=mk('textarea');ta.value=txt;document.body.append(ta);ta.select();try{document.execCommand('copy');toast('Report copied');}catch(_){toast('Copy failed');}ta.remove();}};
+$('print').onclick=()=>window.print();
+
+buildAssessment(); buildBars(); requestAnimationFrame(update);
+</script>
+</body>
+</html>
