@@ -1,11 +1,15 @@
-# Project City (3D portfolio)
+# Project Playground (3D portfolio)
 
-A small 3D city built with three.js where each building is one of my projects. Drive a car or walk, reach a glowing ring and press **E** (or tap **Visit**) to open the project.
+A small physics playground built with three.js and cannon-es. Drive a toy car, crash through the firewall, topple the bar chart, jump the ramp, and park on a glowing pad to open each project.
 
 **Live:** https://kishan0206.github.io/black-shard-portfolio/world/
 
-- Controls: WASD or arrow keys, Shift to boost, V to switch car/walk, R to reset; on phones a joystick and buttons appear
-- Day–night cycle (a full day every 4 minutes): street lamps, headlights, lit windows and stars at night; press N or use the button to switch between cycle, always day and always night
-- Quick-travel buttons and a minimap; a plain list of links is offered for anyone who prefers it or whose browser lacks WebGL
+- Real vehicle physics with suspension, boost, brake and jump; knockable bricks, cubes, cones and balls
+- Eight hidden discoveries, saved in the browser
+- Generated sound effects (engine, horn, crashes, chimes), off until switched on
+- Day–night cycle with street lamps, headlights and stars; press N to switch between cycle, always day and always night
+- Keyboard: WASD or arrows, Shift boost, Space jump, B brake, H honk, Enter open project, R respawn, M sound; drag to look around, scroll to zoom
+- Phones: joystick plus JUMP, BOOST, HONK and BRAKE buttons
+- A plain list of projects is offered for anyone who prefers it or whose browser lacks WebGL
 
 Prepared by Kishan Akabari.

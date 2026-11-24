@@ -4,7 +4,7 @@ Dashboards and analysis built from public Australian cyber security, breach and 
 
 **Portfolio site:** https://kishan0206.github.io/black-shard-portfolio/
 
-**3D Project City:** https://kishan0206.github.io/black-shard-portfolio/world/ (drive or walk around a small 3D city where each building is a project; works on desktop and phone)
+**3D Project City:** https://kishan0206.github.io/black-shard-portfolio/world/ (drive a toy car around a physics playground where each project is a glowing pad; works on desktop and phone)
 
 | Project | What it shows | Link |
 | --- | --- | --- |
